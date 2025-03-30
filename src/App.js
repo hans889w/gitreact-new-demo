@@ -1,25 +1,79 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { Container, Col, Row } from "reactstrap";
+import { Switch, Route } from "react-router-dom";
+import CategoryList from "./CategoryList";
+import ProductList from "./ProductList";
+import NaviBar from "./NaviBar";
+import NotFound from "./NotFound";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedCategory: null,
+    };
+  }
+
+  handleCategorySelect = (categoryId) => {
+    this.setState({ selectedCategory: categoryId });
+  };
+
+  render() {
+    return (
+      <div>
+        <NaviBar />
+        <Switch>
+          {/* /products yolu - sadece ProductList */}
+          <Route
+            exact
+            path="/products"
+            render={(props) => (
+              <Container>
+                <Row>
+                  <Col xs="12">
+                    <ProductList
+                      {...props}
+                      selectedCategory={null} // Tüm fotoğrafları göstermek için null
+                      title="All Photos"
+                    />
+                  </Col>
+                </Row>
+              </Container>
+            )}
+          />
+
+          {/* / ve /products/:categoryId yolları - CategoryList ile birlikte */}
+          <Route
+            exact
+            path={["/", "/products/:categoryId"]}
+            render={(props) => (
+              <Container>
+                <Row>
+                  <Col xs="3">
+                    <CategoryList onCategorySelect={this.handleCategorySelect} />
+                  </Col>
+                  <Col xs="9">
+                    <ProductList
+                      {...props}
+                      selectedCategory={
+                        props.match.params.categoryId
+                          ? parseInt(props.match.params.categoryId)
+                          : this.state.selectedCategory
+                      }
+                      title="All Products"
+                    />
+                  </Col>
+                </Row>
+              </Container>
+            )}
+          />
+
+         
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
