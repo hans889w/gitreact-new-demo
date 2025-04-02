@@ -10,4 +10,4 @@ Follow these steps to run the project on your local machine.
 ### Installation
 1. Clone the project:
    ```bash
-   git clone https://github.com/hans889w/gitreact-demo.git
+   git clone https://github.com/hans889w/gitreact-new-demo
