@@ -1,1 +1,1 @@
-# Hans' Photo Gallery
+# Photo Gallery
